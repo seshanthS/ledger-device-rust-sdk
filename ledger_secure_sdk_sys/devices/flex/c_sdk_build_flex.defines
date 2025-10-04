@@ -37,3 +37,4 @@
 #define HAVE_LEDGER_PKI
 #define NBGL_KEYPAD
 #define HAVE_NFC
+#define HAVE_NFC_READER
