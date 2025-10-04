@@ -524,6 +524,9 @@ impl SDKBuilder<'_> {
             if s.0 == "HAVE_IO_U2F" {
                 configure_lib_u2f(&mut command, &self.device.c_sdk);
             }
+            if s.0 == "HAVE_NFC" {
+                configure_lib_nfc(&mut command, &self.device.c_sdk);
+            }
         }
 
         // Add the defines found in the Makefile.conf.cx to our build command.
@@ -579,6 +582,7 @@ impl SDKBuilder<'_> {
             format!("-I{bsdk}/io_legacy/include/"),
             format!("-I{bsdk}/lib_u2f/include/"),
             format!("-I{bsdk}/lib_cxng/include/"),
+            format!("-I{bsdk}/lib_nfc/include/"),
         ];
         let headers = str2path(
             &self.device.c_sdk,
@@ -588,8 +592,12 @@ impl SDKBuilder<'_> {
                 "include/syscalls.h",
                 "include/os_ux.h",
                 "lib_standard_app/swap_lib_calls.h",
+                "lib_nfc/include/nfc_ledger.h",
+                "lib_nfc/include/nfc_ndef.h",
             ],
         );
+        
+        let mut all_headers = headers;
 
         let mut bindings = bindgen::builder()
             .clang_args(&args)
@@ -614,7 +622,7 @@ impl SDKBuilder<'_> {
         bindings = bindings.header(header);
 
         // SDK headers to bind against
-        for header in headers.iter().map(|p| p.to_str().unwrap()) {
+        for header in all_headers.iter().map(|p| p.to_str().unwrap()) {
             bindings = bindings.header(header);
         }
 
@@ -732,6 +740,13 @@ fn main() {
 fn configure_lib_u2f(command: &mut cc::Build, c_sdk: &Path) {
     command.file(c_sdk.join("lib_u2f/src/u2f_transport.c"));
     command.include(c_sdk.join("lib_u2f/include"));
+}
+
+fn configure_lib_nfc(command: &mut cc::Build, c_sdk: &Path) {
+    command
+        .file(c_sdk.join("lib_nfc/src/nfc_ledger.c"))
+        .file(c_sdk.join("lib_nfc/src/nfc_ndef.c"))
+        .include(c_sdk.join("lib_nfc/include"));
 }
 
 fn configure_lib_usb(command: &mut cc::Build, c_sdk: &Path) {
