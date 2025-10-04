@@ -594,6 +594,7 @@ impl SDKBuilder<'_> {
                 "lib_standard_app/swap_lib_calls.h",
                 "lib_nfc/include/nfc_ledger.h",
                 "lib_nfc/include/nfc_ndef.h",
+                "io_legacy/include/os_io_legacy.h"
             ],
         );
         
