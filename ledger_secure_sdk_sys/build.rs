@@ -8,7 +8,7 @@ use std::{env, fs::File, io::BufRead, io::BufReader, io::Read, io::Write};
 
 const AUX_C_FILES: [&str; 2] = ["./src/c/src.c", "./src/c/sjlj.s"];
 
-const SDK_C_FILES: [&str; 13] = [
+const SDK_C_FILES: [&str; 14] = [
     "src/pic.c",
     "src/checks.c",
     "src/cx_stubs.S",
@@ -21,6 +21,7 @@ const SDK_C_FILES: [&str; 13] = [
     "io/src/os_io_default_apdu.c",
     "io/src/os_io_seph_cmd.c",
     "io/src/os_io_seph_ux.c",
+    "io_legacy/src/os_io_legacy.c",
     "src/syscalls.c",
 ];
 
@@ -470,6 +471,7 @@ impl SDKBuilder<'_> {
             .include(self.gcc_toolchain.join("include"))
             .include(self.device.c_sdk.join("include"))
             .include(self.device.c_sdk.join("lib_u2f/include"))
+            .include(self.device.c_sdk.join("lib_u2f_legacy/include"))
             .include(self.device.c_sdk.join("io/include"))
             .include(self.device.c_sdk.join("io_legacy/include"))
             .include(self.device.c_sdk.join("protocol/include"))
