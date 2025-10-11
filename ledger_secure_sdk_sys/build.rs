@@ -8,7 +8,7 @@ use std::{env, fs::File, io::BufRead, io::BufReader, io::Read, io::Write};
 
 const AUX_C_FILES: [&str; 2] = ["./src/c/src.c", "./src/c/sjlj.s"];
 
-const SDK_C_FILES: [&str; 14] = [
+const SDK_C_FILES: [&str; 15] = [
     "src/pic.c",
     "src/checks.c",
     "src/cx_stubs.S",
@@ -23,6 +23,7 @@ const SDK_C_FILES: [&str; 14] = [
     "io/src/os_io_seph_ux.c",
     "io_legacy/src/os_io_legacy.c",
     "src/syscalls.c",
+    "lib_standard_app/io.c",
 ];
 
 #[derive(Debug, Default, PartialEq)]
@@ -479,6 +480,7 @@ impl SDKBuilder<'_> {
             .include(self.device.c_sdk.join("lib_ux/include"))
             .include(self.device.c_sdk.join("lib_bagl/include"))
             .include(self.device.c_sdk.join("lib_nbgl/include"))
+            .include(self.device.c_sdk.join("lib_standard_app"))
             .include(&glyphs_path)
             .debug(true)
             .define("main", "_start")
