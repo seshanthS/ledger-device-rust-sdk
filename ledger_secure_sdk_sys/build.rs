@@ -592,6 +592,7 @@ impl SDKBuilder<'_> {
                 "lib_cxng/include/libcxng.h", /* cxlib */
                 "include/os.h",               /* syscalls */
                 "include/syscalls.h",
+                "include/os_print.h",
                 "include/os_ux.h",
                 "lib_standard_app/swap_lib_calls.h",
                 "lib_standard_app/io.h",
@@ -667,6 +668,9 @@ impl SDKBuilder<'_> {
         for define in &self.cxdefines {
             bindings = bindings.clang_arg(format!("-D{define}"));
         }
+
+        //add printF
+        bindings = bindings.clang_arg("-DHAVE_PRINTF");
 
         let bindings = bindings
             .parse_callbacks(Box::new(bindgen::CargoCallbacks))
