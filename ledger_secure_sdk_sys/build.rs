@@ -749,7 +749,9 @@ fn main() {
 
 fn configure_lib_u2f(command: &mut cc::Build, c_sdk: &Path) {
     command.file(c_sdk.join("lib_u2f/src/u2f_transport.c"));
+    command.file(c_sdk.join("lib_u2f_legacy/src/u2f_legacy.c"));
     command.include(c_sdk.join("lib_u2f/include"));
+    command.include(c_sdk.join("lib_u2f_legacy/include"));
 }
 
 fn configure_lib_nfc(command: &mut cc::Build, c_sdk: &Path) {
